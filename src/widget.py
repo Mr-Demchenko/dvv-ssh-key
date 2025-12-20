@@ -3,7 +3,7 @@ from masks import *
 def mask_account_card(description_account: str) -> str:
     """Функция возвращает описание карты/счета и маску"""
     index = -1
-    num=0
+    num = 0
     for letter in description_account:
         num += 1
         if letter == " ":
@@ -14,9 +14,9 @@ def mask_account_card(description_account: str) -> str:
 
     number_account = description_account[index:]
     if len(number_account) == 16:
-        return f"{description_account[:index+1]}{get_mask_card_number(number_account)}"
+        return f"{description_account[:index]}{get_mask_card_number(number_account)}"
     elif len(number_account) == 20:
-        return f"{description_account[:index+1]}{get_mask_account(number_account)}"
+        return f"{description_account[:index]}{get_mask_account(number_account)}"
 
     return "Error"
 
