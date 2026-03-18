@@ -1,5 +1,6 @@
-from utils.code import up_fist, calculate_logarithm
 import pytest
+
+from utils.code import calculate_logarithm, up_fist
 
 
 def test_up_first():
@@ -8,6 +9,7 @@ def test_up_first():
 
 def test_up_first_for_empty():
     assert up_fist('') == ''
+
 
 def test_calculate_logarithm_with_negative_number():
     with pytest.raises(ValueError) as exc_info:

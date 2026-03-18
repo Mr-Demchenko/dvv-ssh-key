@@ -12,9 +12,3 @@ def get_mask_account(account_number: str) -> str:
         return "Error"
 
     return f"**{account_number[-4:]}"
-
-
-
-#'1234567890123456' == '1234 56** **** 3456'
-print(get_mask_card_number('1234567890123456'))
-print(get_mask_card_number('123456789012345'))
