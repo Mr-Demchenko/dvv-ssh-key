@@ -72,7 +72,8 @@ def test_transaction_descriptions_returns_iterator(description_transactions: lis
     assert isinstance(result, Iterator)
 
 
-def test_transaction_descriptions_yields_descriptions_in_order(description_transactions: list[dict],expected_descriptions: list[str],):
+def test_transaction_descriptions_yields_descriptions_in_order(description_transactions: list[dict],
+                                                               expected_descriptions: list[str],):
     result = list(transaction_descriptions(description_transactions))
 
     assert result == expected_descriptions

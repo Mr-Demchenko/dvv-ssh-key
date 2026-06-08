@@ -1,5 +1,6 @@
 import math
 
+
 def up_fist(msg):
     """First letter is up"""
     if msg:

@@ -13,7 +13,8 @@ def transaction_descriptions(transactions: list) -> str:
 
 
 def card_number_generator(fist_num: int, last_num: int) -> str:
-    """Функция `card_number_generator` принимает начальное и конечное значения диапазона и генерирует номера карт в формате `XXXX XXXX XXXX XXXX`"""
+    """Функция `card_number_generator` принимает начальное и конечное значения диапазона и генерирует номера карт в
+    формате `XXXX XXXX XXXX XXXX`"""
     card_list = [x for x in range(fist_num, last_num)]
     for num in card_list:
         str_num = "0000000000000000"+str(num)
