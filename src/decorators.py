@@ -1,33 +1,34 @@
+from datetime import datetime
 from functools import wraps
 
 
 def log(filename: str | None = None):
-    """Функция записывает логи в файл или в консоль"""
-
+    """Декоратор записывает логи для запускаемой функции. Запись происходит в файл или в консоль."""
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
+            log_list = []
+            time_begin = datetime.now()
+            log_list.append(f'start {func.__name__} in {time_begin}')
             try:
                 result = func(*args, **kwargs)
-                message = f"{func.__name__} ok"
-                _write_log(message, filename)
+                log_list.append(f'Result of {func.__name__} in {datetime.now()} is {result}')
                 return result
             except Exception as error:
-                message = (
-                    f"{func.__name__} error: {type(error).__name__}. "
-                    f"Inputs: {args}, {kwargs}"
-                )
-                _write_log(message, filename)
+                log_list.append(f'{func.__name__} error: {type(error).__name__}. Inputs: {args}, {kwargs}.')
                 raise
+            finally:
+                time_end = datetime.now()
+                log_list.append(f'end {func.__name__} {time_end}')
+
+                if filename is None:
+                    for each_list in log_list:
+                        print(each_list)
+                else:
+                    with open(filename, "a", encoding="utf-8") as log_file:
+                        for each_list in log_list:
+                            log_file.write(f'{each_list} \n')
 
         return wrapper
 
     return decorator
-
-
-def _write_log(message: str, filename: str):
-    if filename:
-        with open(filename, "a", encoding="utf-8") as file:
-            file.write(f"{message}\n")
-    else:
-        print(message)
