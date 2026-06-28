@@ -9,13 +9,13 @@ def filter_by_currency(transactions: list, currency: str):
 def transaction_descriptions(transactions: list) -> str:
     """Функция принимает список транзакций и по очереди возвращает описание каждой операции."""
     for next_elem in transactions:
-        yield next_elem.descriptions
+        yield next_elem["description"]
 
 
 def card_number_generator(fist_num: int, last_num: int) -> str:
     """Функция `card_number_generator` принимает начальное и конечное значения диапазона и генерирует номера карт в
     формате `XXXX XXXX XXXX XXXX`"""
-    card_list = [x for x in range(fist_num, last_num)]
+    card_list = [x for x in range(fist_num, last_num + 1)]
     for num in card_list:
         str_num = "0000000000000000"+str(num)
         str_num = str_num[len(str_num)-16:len(str_num)]

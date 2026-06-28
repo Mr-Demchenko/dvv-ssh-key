@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from src.decorators import log
+from decorators import log
 
 
 def test_log_prints_success_message_to_console(capsys):
@@ -13,8 +13,14 @@ def test_log_prints_success_message_to_console(capsys):
     result = add_numbers(1, 2)
     captured = capsys.readouterr()
 
+    captured_lines = captured.out.strip().splitlines()
+
     assert result == 3
-    assert captured.out == "add_numbers ok\n"
+    assert len(captured_lines) == 3
+    assert captured_lines[0].startswith("start add_numbers in ")
+    assert captured_lines[1].startswith("Result of add_numbers in ")
+    assert captured_lines[1].endswith(" is 3")
+    assert captured_lines[2].startswith("end add_numbers ")
 
 
 def test_log_prints_error_message_to_console(capsys):
@@ -27,7 +33,12 @@ def test_log_prints_error_message_to_console(capsys):
 
     captured = capsys.readouterr()
 
-    assert captured.out == "divide_numbers error: ZeroDivisionError. Inputs: (1, 0), {}\n"
+    captured_lines = captured.out.strip().splitlines()
+
+    assert len(captured_lines) == 3
+    assert captured_lines[0].startswith("start divide_numbers in ")
+    assert captured_lines[1] == "divide_numbers error: ZeroDivisionError. Inputs: (1, 0), {}."
+    assert captured_lines[2].startswith("end divide_numbers ")
 
 
 def test_log_writes_success_message_to_file(tmp_path: Path) -> None:
@@ -40,7 +51,13 @@ def test_log_writes_success_message_to_file(tmp_path: Path) -> None:
     result = add_numbers(1, 2)
 
     assert result == 3
-    assert log_file.read_text(encoding="utf-8") == "add_numbers ok\n"
+    log_lines = [line.rstrip() for line in log_file.read_text(encoding="utf-8").splitlines()]
+
+    assert len(log_lines) == 3
+    assert log_lines[0].startswith("start add_numbers in ")
+    assert log_lines[1].startswith("Result of add_numbers in ")
+    assert log_lines[1].endswith(" is 3")
+    assert log_lines[2].startswith("end add_numbers ")
 
 
 def test_log_writes_error_message_to_file(tmp_path: Path) -> None:
@@ -53,10 +70,12 @@ def test_log_writes_error_message_to_file(tmp_path: Path) -> None:
     with pytest.raises(ZeroDivisionError):
         divide_numbers(1, 0)
 
-    assert (
-        log_file.read_text(encoding="utf-8")
-        == "divide_numbers error: ZeroDivisionError. Inputs: (1, 0), {}\n"
-    )
+    log_lines = [line.rstrip() for line in log_file.read_text(encoding="utf-8").splitlines()]
+
+    assert len(log_lines) == 3
+    assert log_lines[0].startswith("start divide_numbers in ")
+    assert log_lines[1] == "divide_numbers error: ZeroDivisionError. Inputs: (1, 0), {}."
+    assert log_lines[2].startswith("end divide_numbers ")
 
 
 def test_log_writes_kwargs_to_error_message(capsys) -> None:
@@ -69,7 +88,9 @@ def test_log_writes_kwargs_to_error_message(capsys) -> None:
 
     captured = capsys.readouterr()
 
-    assert (
-        captured.out
-        == "get_item error: IndexError. Inputs: (['first'],), {'index': 2}\n"
-    )
+    captured_lines = captured.out.strip().splitlines()
+
+    assert len(captured_lines) == 3
+    assert captured_lines[0].startswith("start get_item in ")
+    assert captured_lines[1] == "get_item error: IndexError. Inputs: (['first'],), {'index': 2}."
+    assert captured_lines[2].startswith("end get_item ")

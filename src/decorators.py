@@ -32,3 +32,11 @@ def log(filename: str | None = None):
         return wrapper
 
     return decorator
+
+
+@log()
+def summ(a,r):
+    return a+r
+
+
+print(summ(3,5))
