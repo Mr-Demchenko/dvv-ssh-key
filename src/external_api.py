@@ -7,9 +7,9 @@ import requests
 EXCHANGE_RATES_API_URL = "https://api.apilayer.com/exchangerates_data/convert"
 
 
-def load_env_file(file_path: str = ".env") -> None:
-    """Load environment variables from a local .env file if it exists."""
-    env_path = Path(file_path)
+def load_env_file(file_path: str | None = None) -> None:
+    """Получение данных API из файла .env"""
+    env_path = Path(file_path) if file_path else Path(__file__).resolve().parents[1] / ".env"
     if not env_path.exists():
         return
 
@@ -21,7 +21,7 @@ def load_env_file(file_path: str = ".env") -> None:
 
 
 def get_transaction_amount_in_rub(transaction: dict[str, Any]) -> float:
-    """Return transaction amount in rubles, converting USD and EUR through Exchange Rates Data API."""
+    """Возвращаем полученные данные с сайта"""
     operation_amount = transaction.get("operationAmount", {})
     amount = float(operation_amount.get("amount", 0))
     currency = operation_amount.get("currency", {}).get("code")
