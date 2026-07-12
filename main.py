@@ -1,6 +1,6 @@
 from masks import get_mask_account, get_mask_card_number
-from widget import mask_account_card, get_date
 from processing import filter_by_state, sort_by_date
+from widget import get_date, mask_account_card
 
 print(filter_by_state([{'id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364'},
                        {'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'}]))
@@ -11,6 +11,8 @@ print(sort_by_date([{'id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18
 
 print(get_mask_card_number("1234567890123456"))
 print(get_mask_account("12345678901234567890"))
+
+print(get_mask_account("1234567890123456"))
 
 
 print(get_date("2024-03-11T02:26:18.671407"))
