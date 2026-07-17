@@ -38,6 +38,7 @@ exclude = '''\git'''
 
 [tool.isort]
 line_length = 119
+skip = ["dvv-ssh-key", "src/perstests"]
 
 [tool.mypy]
 disallow_untyped_defs = true
