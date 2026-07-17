@@ -26,7 +26,7 @@ def get_mask_card_number(card_number: str) -> str:
 
 
 def get_mask_account(account_number: str) -> str:
-    """Функция возвращает маску номера счета по маске"""
+    """Функция возвращает маску номера счета по маске тест"""
     if not (len(account_number) == 20 or len(account_number) == 22):
         logger_masks.error(f'Error of length account number {account_number} not 20 and not 22')
         return "Error"
