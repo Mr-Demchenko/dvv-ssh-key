@@ -1,6 +1,6 @@
 import pytest
 
-from src.processing import filter_by_state, sort_by_date
+from src.processing import filter_by_state, process_bank_operations, process_bank_search, sort_by_date
 
 
 @pytest.mark.parametrize('test, execute', [
@@ -27,3 +27,41 @@ def test_filter_by_state(test, execute):
 ])
 def test_sort_by_date(test, execute):
     assert sort_by_date(test) == execute
+
+
+def test_process_bank_search_returns_operations_by_description():
+    transactions = [
+        {'description': 'Перевод организации', 'state': 'EXECUTED'},
+        {'description': 'Открытие вклада', 'state': 'EXECUTED'},
+        {'description': 'Перевод с карты на карту', 'state': 'CANCELED'},
+        {'state': 'EXECUTED'},
+    ]
+
+    result = process_bank_search(transactions, 'перевод')
+
+    assert result == [transactions[0], transactions[2]]
+
+
+def test_process_bank_search_returns_empty_list_without_matches():
+    transactions = [
+        {'description': 'Перевод организации', 'state': 'EXECUTED'},
+        {'description': 'Открытие вклада', 'state': 'EXECUTED'},
+    ]
+
+    assert process_bank_search(transactions, 'наличные') == []
+
+
+def test_process_bank_operations_counts_categories():
+    transactions = [
+        {'description': 'Перевод организации'},
+        {'description': 'Открытие вклада'},
+        {'description': 'Перевод организации'},
+        {'description': 'Перевод с карты на карту'},
+    ]
+    categories = ['Перевод организации', 'Открытие вклада', 'Перевод со счета на счет']
+
+    assert process_bank_operations(transactions, categories) == {
+        'Перевод организации': 2,
+        'Открытие вклада': 1,
+        'Перевод со счета на счет': 0,
+    }
