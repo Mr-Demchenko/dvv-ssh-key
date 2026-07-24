@@ -22,7 +22,7 @@ def read_csv_file(file_path: str) -> list[dict[str, Any]]:
     """Получаем CSV из файла и переводим в список словарей."""
     try:
         with open(file_path, encoding="utf-8", newline="") as file:
-            reader = csv.DictReader(file)
+            reader = csv.DictReader(file, delimiter=';')
             return list(reader)
     except FileNotFoundError as error_str:
         logger.error(f'{error_str}')
